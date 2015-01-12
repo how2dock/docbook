@@ -1,0 +1,22 @@
+{
+"builders": [
+  {
+    "type": "docker",
+    "image": "ansible/ubuntu14.04-ansible:stable",
+    "commit": "true"
+  }
+],
+"provisioners": [
+  {
+    "type": "ansible-local",
+    "playbook_file": "local.yml"
+  }
+],
+"post-processors": [
+   {
+     "type": "docker-tag",
+     "repository": "how2dock/packer",
+     "tag": "latest"
+   }
+]
+}

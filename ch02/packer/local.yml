@@ -1,0 +1,6 @@
+---
+- hosts: localhost
+  connection: local
+  tasks:
+   - name: install nginx
+     apt: pkg=nginx state=installed update_cache=true

@@ -21,7 +21,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
      vb.customize ["modifyvm", :id, "--memory", "2048"]
   end
 
-  #config.vm.provision :shell, :path => "docker-bootstrap.sh"
-  config.vm.provision :shell, :path => "docker-latest.sh" 
+  config.vm.provision :shell, :path => "docker-bootstrap.sh"
 
 end

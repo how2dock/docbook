@@ -1,11 +1,11 @@
 FROM ubuntu:14.04
 
-MAINTAINER toto@toto.com
+MAINTAINER how2dock@gmail.com
 
 RUN apt-get update
 RUN apt-get install -y nginx
 
-RUN echo "toto is toto" > /usr/share/nginx/html/index.html
+RUN echo "foobar uses Docker" > /usr/share/nginx/html/index.html
 
 CMD ["nginx","-g","daemon off;"]
 

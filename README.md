@@ -3,7 +3,7 @@ docbook
 
 docker cookbook examples
 
-These are scripts being developed for the O'Reilly [docker](http://docker.com) cookbook
+These are scripts being developed for the O'Reilly Docker [cookbook](https://github.com/how2dock/docbook.git)
 
 * * *
 The book is currently in early release, except frequent changes. It has not been technicaly reviewed, nor has it been edited.

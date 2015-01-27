@@ -14,6 +14,10 @@ Work in progress ...
 
 [Chapter 2 - Image Creation and Sharing](ch02/)
 
+[Chapter 3 - Networking](ch03/)
+
 [Chapter 4 - Configuration and Dev](ch04/)
+
+[Chapter 6 - JEOS for Docker](ch06/)
 
 [Chapter 7 - Tools ](ch04/)

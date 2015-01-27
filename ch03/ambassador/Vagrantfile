@@ -1,0 +1,39 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+$bootstrap=<<SCRIPT
+apt-get update
+curl -sSL https://get.docker.com/ubuntu/ | sudo sh
+gpasswd -a vagrant docker
+SCRIPT
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  config.vm.define "wordpress" do |amba|
+    amba.vm.box = "ubuntu/trusty64"
+    amba.vm.hostname = "amba-1"
+    amba.vm.network :private_network, ip: "192.168.33.10"
+    amba.vm.provider "virtualbox" do |vb|
+     vb.customize ["modifyvm", :id, "--memory", "1024"]
+    end
+    amba.vm.provision :shell, inline: $bootstrap
+    amba.vm.provision :shell, inline: "docker pull wordpress:latest"
+    amba.vm.provision :shell, inline: "docker pull progrium/ambassadord"
+  end
+
+  config.vm.define "mysql" do |amba|
+    amba.vm.box = "ubuntu/trusty64"
+    amba.vm.hostname = "amba-2"
+    amba.vm.network :private_network, ip: "192.168.33.11"
+    amba.vm.provider "virtualbox" do |vb|
+     vb.customize ["modifyvm", :id, "--memory", "1024"]
+    end
+    amba.vm.provision :shell, inline: $bootstrap
+    amba.vm.provision :shell, inline: "docker pull mysql:latest"
+    amba.vm.provision :shell, inline: "docker pull progrium/ambassadord"
+  end
+
+end

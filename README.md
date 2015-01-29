@@ -1,9 +1,11 @@
 docbook
 =======
 
-docker cookbook examples
+[Docker](http://docker.com) cookbook examples
 
 These are scripts being developed for the O'Reilly Docker [cookbook](http://shop.oreilly.com/product/0636920036791.do)
+
+![Book cover](./images/bookcover.png)
 
 * * *
 The book is currently in early release, except frequent changes. It has not been technicaly reviewed, nor has it been edited.

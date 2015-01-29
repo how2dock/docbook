@@ -1,6 +1,6 @@
 Flask Application Example
 =========================
 
-This is available as an Automated Build on https://hub.docker.com[Docker Hub].
+This is available as an Automated Build on [Docker Hub](https://hub.docker.com)
 
-   docker pull runseb/flask
+    $ docker pull runseb/flask

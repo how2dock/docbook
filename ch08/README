@@ -1,4 +1,6 @@
 Recipes to use Docker in the Cloud
 ==================================
 
+Check the ecs directory to find scripts that you can use to create an ECS policy and start instances with that instance profile.
+
 

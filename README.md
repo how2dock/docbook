@@ -8,7 +8,7 @@ These are scripts being developed for the O'Reilly Docker [cookbook](http://shop
 ![Book cover](./images/bookcover.png)
 
 * * *
-The book is currently in early release, except frequent changes. It has not been technicaly reviewed, nor has it been edited.
+The book is currently in early release, expect frequent changes. It has not been technicaly reviewed, nor has it been edited.
 Work in progress ...
 * * *
 

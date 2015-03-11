@@ -1,0 +1,40 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+$bootstrap=<<SCRIPT
+apt-get update
+curl -sSL https://get.docker.com/ubuntu/ | sudo sh
+gpasswd -a vagrant docker
+SCRIPT
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  config.vm.define "w" do |w|
+    w.vm.box = "ubuntu/trusty64"
+    w.vm.hostname = "amba-1"
+    w.vm.network :private_network, ip: "192.168.34.10"
+    w.vm.provider "virtualbox" do |vb|
+     vb.customize ["modifyvm", :id, "--memory", "1024"]
+    end
+    w.vm.provision :shell, inline: $bootstrap
+    w.vm.provision :shell, inline: "docker pull gliderlabs/logspout:latest"
+    w.vm.provision :shell, inline: "docker pull nginx"
+  end
+
+  config.vm.define "elk" do |elk|
+    elk.vm.box = "ubuntu/trusty64"
+    elk.vm.hostname = "log-2"
+    elk.vm.network :private_network, ip: "192.168.34.11"
+    elk.vm.provider "virtualbox" do |vb|
+     vb.customize ["modifyvm", :id, "--memory", "1024"]
+    end
+    elk.vm.provision :shell, inline: $bootstrap
+    elk.vm.provision :shell, inline: "docker pull ehazlett/elasticsearch"
+    elk.vm.provision :shell, inline: "docker pull ehazlett/logstash"
+    elk.vm.provision :shell, inline: "docker pull ehazlett/kibana"
+  end
+
+end

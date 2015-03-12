@@ -1,0 +1,23 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+$bootstrap=<<SCRIPT
+gpasswd -a vagrant root
+SCRIPT
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # Every Vagrant virtual environment requires a box to build off of.
+  config.vm.box = "atomic"
+  config.vm.box_url = "http://buildlogs.centos.org/rolling/7/isos/x86_64/CentOS-7-x86_64-AtomicHost-Vagrant-VirtualBox.box"
+  
+  config.vm.provider "virtualbox" do |vb, override|
+     vb.customize ["modifyvm", :id, "--memory", "2048"]
+  end
+
+  config.vm.network :forwarded_port, host: 9090, guest: 9090
+  config.vm.provision :shell, inline: $bootstrap
+
+end

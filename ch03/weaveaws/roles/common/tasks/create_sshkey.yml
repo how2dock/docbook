@@ -1,0 +1,15 @@
+  - name: Create EC2 SSH Key
+    ec2_key:
+      name: "{{ ssh_key }}"
+      region: "{{ aws_region }}"
+      state: present
+    register: ec2key
+    tags: sshkey
+
+  - local_action: copy content="{{ ec2key.key.private_key }}" dest="~/.ssh/id_rsa_{{ ssh_key }}"
+    when: ec2key.changed
+    tags: sshkey
+
+  - file: path="~/.ssh/id_rsa_{{ ssh_key }}" mode=0600
+    when: ec2key.changed
+    tags: sshkey

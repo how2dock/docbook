@@ -1,0 +1,13 @@
+---
+# defaults file for dockerinstall
+#
+docker_package: lxc-docker
+#
+# 
+apt_repository_details: deb https://get.docker.com/ubuntu docker main
+#
+#
+apt_key_url: keyserver.ubuntu.com 
+#
+#
+apt_key_id: 36A1D7869245C8950F966E92D8576A8BA88D21E9  

@@ -1,0 +1,10 @@
+---
+# tasks file for weaveinstall
+- name: Download and Install Weave
+  get_url: url={{ weave_url }} dest={{weave_bin }}
+
+- name: Setup Weave Permissions 
+  file: path={{ weave_bin }} mode="u+rx,g+rx,o+rwx"
+
+- name: Download Weave Containers
+  command: sudo weave setup

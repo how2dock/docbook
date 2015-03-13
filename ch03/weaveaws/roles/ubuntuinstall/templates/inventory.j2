@@ -1,0 +1,17 @@
+[default]
+localhost ansible_python_interpreter=/usr/bin/python
+
+[launched]
+{% set count = 1 %}
+{% for item in ec2.instances %}
+{{ item.public_ip }} new_host=weave-gs-0{{ count }}
+{% set count = count + 1 %}
+{% endfor %}
+
+[launched:vars]
+public_ip={{ ec2.instances[0].public_ip }}
+
+[nodes:vars]
+ansible_ssh_user=ubuntu
+ansible_ssh_private_key_file=~/.ssh/id_rsa_{{ ssh_key }}
+ansible_python_interpreter="PATH=/home/core/bin:$PATH python"

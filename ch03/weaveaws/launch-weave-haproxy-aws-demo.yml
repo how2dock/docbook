@@ -1,0 +1,10 @@
+---
+- name: Launch Weave, HAProxy and Web Server Containers
+  hosts: launched
+  sudo: yes
+  remote_user: ubuntu
+  vars:
+    ansible_ssh_private_key_file: "~/.ssh/id_rsa_{{ ssh_key }}"
+    ssh_key: weavedemo
+  roles:
+  - weavehaproxydemo

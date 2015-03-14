@@ -1,0 +1,18 @@
+- hosts: launched
+  gather_facts: True
+  connection: local
+  vars: 
+  - region: 'eu-west-1'
+  tasks:
+    - name: Gather EC2 facts
+      local_action: ec2_facts
+ 
+    - debug: var=hostvars[inventory_hostname]
+    - debug: msg="{{ hostvars[inventory_hostname]['ansible_ec2_instance_id'] }}"
+ 
+      #    - name: Terminate instances 
+      #local_action: ec2
+      #  state='absent'
+      ##  instance_ids='{{ ec2_id }}'
+      #  region='{{ region }}'
+      #  wait=True

@@ -1,0 +1,28 @@
+---
+# tasks file for dockerinstall
+
+  - name: Update Ubuntu Image
+    apt: update_cache=yes
+
+  - name: Add Docker Repository
+    apt_repository:
+      repo: "{{ apt_repository_details }}"
+      update_cache: yes
+      state: present 
+
+  - name: Add Docker Repository Key
+    apt_key:
+      keyserver: "{{ apt_key_url }}"
+      id: "{{ apt_key_id }}"
+      state: present
+
+  - name: Install Docker Package
+    apt:
+      name: "{{ docker_package }}"
+      update_cache: yes
+      state: latest
+
+  - name: Launch Docker Service
+    service:
+      name: docker
+      state: started

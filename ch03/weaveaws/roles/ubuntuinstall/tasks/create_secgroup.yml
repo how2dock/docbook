@@ -1,0 +1,45 @@
+# Create Weave security group
+#
+# The important part to note here is our opening of ports 6783
+# to udp and tcp traffic. 
+#
+
+  - name: Create Weave Security Group
+    ec2_group:
+     name: "{{ security_group_name }}" 
+     description: Weave security group
+     region: "{{ aws_region }}"
+     rules:
+       - proto: tcp
+         from_port: 22
+         to_port: 22
+         cidr_ip: 0.0.0.0/0
+       - proto: tcp
+         from_port: 80
+         to_port: 80
+         cidr_ip: 0.0.0.0/0
+       - proto: icmp
+         from_port: -1
+         to_port: -1
+         cidr_ip: 0.0.0.0/0
+       - proto: tcp
+         from_port: 6783
+         to_port: 6783
+         cidr_ip: 0.0.0.0/0
+       - proto: udp
+         from_port: 6783
+         to_port: 6783
+         cidr_ip: 0.0.0.0/0
+     rules_egress:
+       - proto: tcp
+         from_port: 0
+         to_port: 65535
+         cidr_ip: 0.0.0.0/0
+       - proto: udp
+         from_port: 0
+         to_port: 65535
+         cidr_ip: 0.0.0.0/0
+       - proto: icmp
+         from_port: -1
+         to_port: -1
+         cidr_ip: 0.0.0.0/0

@@ -1,2 +1,2 @@
-Recipe for Docker compose
+Recipe for Preview of Docker compose
 ====================================

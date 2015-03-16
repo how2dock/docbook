@@ -4,6 +4,14 @@
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
+$bootstrap=<<SCRIPT
+apt-get update
+apt-get -y install wget
+curl -sSL https://get.docker.com/ubuntu/ | sudo sh
+gpasswd -a vagrant docker
+wget https://github.com/docker/machine/releases/download/v0.1.0/docker-machine_linux-amd64
+SCRIPT
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "ubuntu/trusty64"
@@ -16,6 +24,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
      vb.customize ["modifyvm", :id, "--memory", "2048"]
   end
 
-  config.vm.provision :shell, :path => "machine-bootstrap.sh"
+  config.vm.provision :shell, inline: $bootstrap
 
 end

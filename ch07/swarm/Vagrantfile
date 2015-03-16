@@ -4,6 +4,21 @@
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
+$bootstrap=<<SCRIPT
+apt-get update
+curl -sSL https://get.docker.com/ubuntu/ | sudo sh
+gpasswd -a vagrant docker
+echo DOCKER_OPTS=\"-H tcp://0.0.0.0:2375\" >> /etc/default/docker
+service docker restart
+SCRIPT
+
+$swarm=<<SCRIPT
+apt-get update
+curl -sSL https://get.docker.com/ubuntu/ | sudo sh
+gpasswd -a vagrant docker
+docker pull swarm
+SCRIPT
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   num_nodes = 3
@@ -17,7 +32,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     swarm.vm.provider "virtualbox" do |vb|
      vb.customize ["modifyvm", :id, "--memory", "2048"]
     end
-    swarm.vm.provision :shell, :path => "swarm-bootstrap.sh"
+    swarm.vm.provision :shell, inline: $swarm
   end
 
   num_nodes.times do |n|
@@ -27,7 +42,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       swarm_index = n+1
       swarm.vm.hostname = "swarm-#{swarm_index}"
       swarm.vm.network :private_network, ip: "#{swarm_ip}"
-      swarm.vm.provision :shell, :path => "docker-bootstrap.sh"
+      swarm.vm.provision :shell, inline: $bootstrap
     end
   end
 

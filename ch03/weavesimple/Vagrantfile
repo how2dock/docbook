@@ -1,0 +1,73 @@
+# Basic Ubuntu and Docker setup Vagrantfile
+#
+# Weave Getting Started Guides
+#
+
+require 'fileutils'
+require 'ipaddr'
+
+Vagrant.require_version ">= 1.6.0"
+
+VAGRANTFILE_API_VERSION = "2"
+CONFIG = File.join(File.dirname(__FILE__), "config.rb")
+
+ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
+
+# Defaults for config options defined in CONFIG
+#
+
+$num_instances = 2
+$instance_name_prefix = "weave-gs"
+$share_home = false
+$vm_gui = false
+$vm_memory = 512
+$vm_cpus = 1
+$vm_starting_ip = "172.17.8.100"
+
+if File.exist?(CONFIG)
+    require CONFIG
+end
+
+$vm_ip = $vm_starting_ip
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+    config.vm.box = "ubuntu/trusty64"
+    config.ssh.insert_key = true
+
+    if Vagrant.has_plugin?("vagrant-cachier")
+        config.cache.scope = :box
+    end
+
+    (1..$num_instances).each do |i|
+    
+        config.vm.define vm_name = "%s-%02d" % [$instance_name_prefix, i] do |config|
+            config.vm.hostname = vm_name
+            if  i == 1 
+                config.vm.network "forwarded_port", guest: 80, host: 8080
+            end        
+
+            ip = IPAddr.new($vm_ip)
+            $vm_ip = ip.succ.to_s
+            config.vm.network "private_network", ip: $vm_ip
+        end
+    end
+
+    config.vm.provider :virtualbox do |vb|
+        vb.gui = $vm_gui
+        vb.memory = $vm_memory
+        vb.cpus = $vm_cpus
+    end
+
+    config.vm.provision "docker" do |d|
+        d.pull_images "ubuntu"
+        d.pull_images "nginx"
+        d.pull_images "zettio/weave"
+        d.pull_images "fintanr/weave-gs-simple-hw"
+        d.pull_images "fintanr/weave-gs-ubuntu-curl"
+    end
+    
+    config.vm.provision "shell", privileged: true, inline: <<-SHELL
+        sudo wget -O /usr/local/bin/weave https://github.com/zettio/weave/releases/download/latest_release/weave
+        sudo chmod a+x /usr/local/bin/weave
+    SHELL
+end

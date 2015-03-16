@@ -1,0 +1,8 @@
+---
+# defaults file for weaveinstall
+# 
+# weave_rul - url to pull weave from
+weave_url: https://github.com/zettio/weave/releases/download/latest_release/weave
+#
+# weave binary output
+weave_bin: /usr/local/bin/weave

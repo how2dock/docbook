@@ -1,0 +1,56 @@
+---
+# tasks file for demo application run
+#
+# this is for the purposes of a demo app
+# 
+- name: Launch Weave on weave-gs-01 
+  command: sudo weave launch
+  when: new_host == "weave-gs-01"
+
+- name: Launch WeaveDNS on weave-gs-01 
+  command: sudo weave launch-dns 10.2.1.1/24
+  when: new_host == "weave-gs-01"
+
+- name: Launch Weave on weave-gs-02 
+  command: sudo weave launch {{ public_ip }} 
+  when: new_host == "weave-gs-02"
+
+- name: Launch Weave on weave-gs-02 
+  command: sudo weave launch-dns 10.2.1.2/24
+  when: new_host == "weave-gs-02"
+
+- name: Create HAProxy Config Directory
+  file: path=/home/ubuntu/haproxy-override state=directory
+  when: new_host == "weave-gs-01"
+
+- name: Copy haproxy configfile into place
+  copy: src=../files/haproxy.cfg dest=/home/ubuntu/haproxy-override/haproxy.cfg
+  when: new_host == "weave-gs-01"
+
+- name: Launch WS Container ws1 on weave-gs-01
+  command: sudo weave run --with-dns 10.3.1.1/24 -h ws1.weave.local fintanr/weave-gs-haproxy-example
+  when: new_host == "weave-gs-01"
+
+- name: Launch WS Container ws2 on weave-gs-01
+  command: sudo weave run --with-dns 10.3.1.2/24 -h ws2.weave.local fintanr/weave-gs-haproxy-example
+  when: new_host == "weave-gs-01"
+
+- name: Launch WS Container ws3 on weave-gs-01
+  command: sudo weave run --with-dns 10.3.1.3/24 -h ws3.weave.local fintanr/weave-gs-haproxy-example
+  when: new_host == "weave-gs-01"
+
+- name: Launch WS Container ws4 on weave-gs-02
+  command: sudo weave run --with-dns 10.3.1.4/24 -h ws4.weave.local fintanr/weave-gs-haproxy-example
+  when: new_host == "weave-gs-02"
+
+- name: Launch WS Container ws5 on weave-gs-02
+  command: sudo weave run --with-dns 10.3.1.5/24 -h ws5.weave.local fintanr/weave-gs-haproxy-example
+  when: new_host == "weave-gs-02"
+
+- name: Launch WS Container ws6 on weave-gs-02
+  command: sudo weave run --with-dns 10.3.1.6/24 -h ws6.weave.local fintanr/weave-gs-haproxy-example
+  when: new_host == "weave-gs-02"
+
+- name: Launch HAProxy Container hap1 on weave-gs-01
+  command: sudo weave run --with-dns 10.3.1.7/24 -h hap1.weave.local -p 80:80 -v /home/ubuntu/haproxy-override:/haproxy-override dockerfile/haproxy
+  when: new_host == "weave-gs-01"

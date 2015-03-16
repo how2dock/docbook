@@ -1,0 +1,18 @@
+  - name: Start Ubuntu Instances
+    ec2:
+      region: "{{ aws_region }}"
+      image: "{{ template }}"
+      instance_type: "{{ instance_type }}"
+      key_name: "{{ ssh_key }}"
+      group: "{{ security_group_name }}"
+      wait: yes
+      count: "{{ num_nodes }}"
+    register: ec2
+
+  - name: Add new instance to host group
+    add_host: hostname={{ item.public_ip }} groupname=weave_ec2hosts 
+    with_items: ec2.instances
+
+  - name: Wait for SSH to come up
+    wait_for: host={{ item.public_dns_name }} port=22 delay=60 timeout=320 state=started
+    with_items: ec2.instances

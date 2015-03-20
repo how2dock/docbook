@@ -1,0 +1,34 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  num_nodes = 3
+  base_ip = "192.168.33."
+  swarm_ips = num_nodes.times.collect { |n| base_ip + "#{n+11}" }
+
+  config.vm.define "rancheros-head" do |rancheros|
+    rancheros.vm.box       = "rancheros"
+    rancheros.vm.box_url   = "http://cdn.rancher.io/vagrant/x86_64/prod/rancheros_virtualbox.box"
+    rancheros.ssh.username = "rancher"
+    rancheros.vm.network :private_network, ip: "192.168.33.10"
+    rancheros.vm.provider "virtualbox" do |vb|
+     vb.customize ["modifyvm", :id, "--memory", "1024"]
+    end
+    rancheros.vm.synced_folder ".", "/vagrant", disabled: true
+  end
+
+  num_nodes.times do |n|
+    config.vm.define "rancheros-#{n+1}" do |rancheros|
+      rancheros.vm.box       = "rancheros"
+      rancheros_ip = swarm_ips[n]
+      rancheros_index = n+1
+      rancheros.vm.hostname = "rancheros-#{rancheros_index}"
+      rancheros.vm.network :private_network, ip: "#{rancheros_ip}"
+    end
+  end
+
+end

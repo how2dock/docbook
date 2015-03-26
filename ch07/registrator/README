@@ -1,0 +1,5 @@
+Using Registrator
+=================
+
+VM that pulls registrator, consul and downloads confd and etcd
+Used to test service discovery

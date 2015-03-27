@@ -1,0 +1,11 @@
+{
+  "id": "http",
+  "cmd": "python -m SimpleHTTPServer $PORT0",
+  "mem": 50,
+  "cpus": 0.1,
+  "instances": 1,
+  "constraints": [
+    ["hostname", "UNIQUE"]
+  ],
+  "ports": [0] 
+}

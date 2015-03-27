@@ -1,0 +1,32 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2" # Vagrantfile version
+NODE_COUNT = 2 # Number of Clocker nodes to start
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # Setup VirtualBox VMs
+  config.vm.box = "ubuntu/trusty64"
+  config.vm.provider "virtualbox" do |box|
+     box.customize [ "modifyvm", :id, "--cpus", "2" ]
+     box.customize [ "modifyvm", :id, "--memory", "2048" ]
+     box.customize [ "modifyvm", :id, "--natdnshostresolver1", "on" ]
+  end
+
+  # Configure SSH key
+  config.vm.provision "shell", privileged: false,
+    :inline => "cat /vagrant/clocker_id_rsa.pub >> ~/.ssh/authorized_keys"
+
+  # Configure passwordless sudo
+  config.vm.provision "shell", privileged: true,
+    :inline => "echo 'vagrant ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers"
+
+  # Create nodes using private network
+  NODE_COUNT.times do |i|
+    node_id = "clocker-#{i}"
+    config.vm.define node_id do |node|
+      node.vm.hostname = node_id
+      node.vm.network :private_network, ip: "192.168.100.1#{i}"
+    end
+  end
+end

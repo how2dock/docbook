@@ -1,0 +1,44 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+$bootstrap=<<SCRIPT
+apt-get update
+curl -sSL https://get.docker.com/ubuntu/ | sudo sh
+gpasswd -a vagrant docker
+service docker restart
+apt-get -y install python-dev
+apt-get -y install python-pip
+pip install docker-py==0.7.0
+SCRIPT
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  num_nodes = 2
+  base_ip = "192.168.33."
+  mesos_ips = num_nodes.times.collect { |n| base_ip + "#{n+11}" }
+
+  config.vm.define "mesos-head" do |mesos|
+    mesos.vm.box = "ubuntu/trusty64"
+    mesos.vm.hostname = "mesos-head"
+    mesos.vm.network :private_network, ip: "192.168.33.10"
+    mesos.vm.provider "virtualbox" do |vb|
+     vb.customize ["modifyvm", :id, "--memory", "1024"]
+    end
+    mesos.vm.provision :shell, inline: $bootstrap
+  end
+
+  num_nodes.times do |n|
+    config.vm.define "mesos-#{n+1}" do |mesos|
+      mesos.vm.box = "ubuntu/trusty64"
+      mesos_ip = mesos_ips[n]
+      mesos_index = n+1
+      mesos.vm.hostname = "mesos-#{mesos_index}"
+      mesos.vm.network :private_network, ip: "#{mesos_ip}"
+      mesos.vm.provision :shell, inline: $bootstrap
+    end
+  end
+
+end

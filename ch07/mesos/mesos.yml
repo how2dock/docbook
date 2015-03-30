@@ -1,0 +1,51 @@
+- hosts: masters
+  tasks:
+
+  - command: docker run -d -p 2181:2181 mesosphere/mesos:0.21.1-1.1.ubuntu1404 /usr/share/zookeeper/bin/zkServer.sh start-foreground
+  - command: docker run -d -p 5050:5050 -e MESOS_ZK=zk://{{ hostvars['master'].ansible_ssh_host }}:2181/mesos -e MESOS_IP={{ hostvars['master'].ansible_ssh_host }} --net=host mesosphere/mesos-master:0.21.1-1.1.ubuntu1404
+  - command: docker run -d -p 8080:8080 -e MARATHON_MASTER=zk://{{ hostvars['master'].ansible_ssh_host }}:2181/mesos -e MARATHON_ZK=zk://{{ hostvars['master'].ansible_ssh_host }}:2181/marathon mesosphere/marathon:v0.8.1-RC1
+
+#  - name: Run zookeeper container
+#    docker:
+#      name: zk
+#      image: mesosphere/mesos:0.21.1-1.1.ubuntu1404
+#      ports: "2181:2181"
+#      detach: true
+#      command: /usr/share/zookeeper/bin/zkServer.sh start-foreground
+#      pull: missing
+
+#  - command: sleep 3
+
+#  - name: Run mesos master
+#    docker:
+#      name: master
+#      image: mesosphere/mesos-master:0.21.1-1.1.ubuntu1404
+#      env: "MESOS_ZK=zk://{{ hostvars['master'].ansible_ssh_host }}:2181/mesos,MESOS_IP={{ hostvars['master'].ansible_ssh_host }}"
+#      detach: true
+#      ports: "5050:5050"
+#      net: host
+#      pull: missing
+
+#  - name: Run mesos marathon framework
+#    docker:
+#      name: marathon
+#      image: mesosphere/marathon:v0.8.1-RC1
+#      env: "MARATHON_MASTER=zk://{{ hostvars['master'].ansible_ssh_host }}:2181/mesos,MARATHON_ZK=zk://{{ hostvars['master'].ansible_ssh_host }}:2181/marathon"
+#      ports: "8080:8080"
+#      detach: true
+#      pull: missing
+
+- hosts: slaves
+  vars:
+    containerizers: docker,mesos
+  tasks:
+
+  - command: docker run -d -e MESOS_MASTER=zk://{{ hostvars['master'].ansible_ssh_host }}:2181/mesos -e MESOS_IP={{ ansible_ssh_host}} -e MESOS_CONTAINERIZERS=docker,mesos --net=host -v /var/run/docker.sock:/var/run/docker.sock -v /usr/bin/docker:/usr/bin/docker -v /sys:/sys mesosphere/mesos-slave:0.21.1-1.1.ubuntu1404
+
+#  - name: Run mesos slave
+#    docker:
+#      image: mesosphere/mesos-slave:0.21.1-1.1.ubuntu1404
+#      detach: true
+#      net: host
+#      volumes: /var/run/docker.sock:/var/run/docker.sock,/usr/bin/docker:/usr/bin/docker,/sys:/sys
+#      env: "MESOS_MASTER=zk://{{ hostvars['master'].ansible_ssh_host }}:2181/mesos,MESOS_IP={{ ansible_ssh_host }},MESOS_CONTAINERIZERS={{ containerizers }}"

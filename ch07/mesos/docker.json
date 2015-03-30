@@ -12,5 +12,5 @@
   "id": "nginx",
   "instances": 1,
   "cpus": 0.5,
-  "mem": 512
+  "mem": 128
 }

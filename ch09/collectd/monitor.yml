@@ -14,12 +14,12 @@ graphite:
    - 2003:2003
    - 8125:8125/udp
 logstash:
-  image: logstash
+  image: ehazlett/logstash
   ports:
    - 5000:5000
    - 5000:5000/udp
   volumes:
-   - $(pwd):/config-dir
+   - /vagrant/logstash.conf:/etc/logstash.conf
   links:
    - es:elasticsearch
-  command: logstash -f /etc/logstash.conf
+  command: -f /etc/logstash.conf

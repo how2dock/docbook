@@ -1,0 +1,15 @@
+nginx:
+  image: nginx
+  ports:
+   - 80:80
+logspout:
+  image: gliderlabs/logspout
+  volumes:
+   - /var/run/docker.sock:/tmp/docker.sock
+  command: syslog://192.168.33.11:5000
+collectd:
+  build: .
+  volumes:
+   - var/run/docker.sock:/var/run/docker.sock 
+load:
+  image: borja/unixbench

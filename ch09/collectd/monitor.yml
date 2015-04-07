@@ -1,0 +1,25 @@
+es:
+  image: ehazlett/elasticsearch
+  ports:
+   - 9300:9300
+   - 9200:9200
+kibana:
+  image: ehazlett/kibana
+  ports:
+   - 8080:80
+graphite:
+  image: hopsoft/graphite-statsd
+  ports:
+   - 80:80
+   - 2003:2003
+   - 8125:8125/udp
+logstash:
+  image: logstash
+  ports:
+   - 5000:5000
+   - 5000:5000/udp
+  volumes:
+   - $(pwd):/config-dir
+  links:
+   - es:elasticsearch
+  command: logstash -f /etc/logstash.conf

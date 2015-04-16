@@ -11,12 +11,26 @@ apt-get -y install python-pip
 curl -sSL https://get.docker.com/ubuntu/ | sudo sh
 gpasswd -a vagrant docker
 service docker restart
+SCRIPT
+
+$gce=<<SCRIPT
 wget https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.zip
 unzip google-cloud-sdk.zip
 rm google-cloud-sdk.zip
 google-cloud-sdk/install.sh --usage-reporting=false --path-update=true --bash-completion=true --rc-path=/home/vagrant/.bashrc --disable-installation-options
 yes | /home/vagrant/google-cloud-sdk/bin/gcloud components update preview
+rm /home/vagrant/.bashrc
+echo "source '/home/vagrant/google-cloud-sdk/path.bash.inc'\nsource '/home/vagrant/google-cloud-sdk/completion.bash.inc'" >> /home/vagrant/.profile
+SCRIPT
+
+$aws=<<SCRIPT
 pip install awscli
+SCRIPT
+
+$azure=<<SCRIPT
+apt-get -y install nodejs-legacy
+apt-get -y install npm
+npm install azure-cli --global
 SCRIPT
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
@@ -29,6 +43,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
      vb.customize ["modifyvm", :id, "--memory", "1024"]
     end
     cloud.vm.provision :shell, inline: $bootstrap
+    cloud.vm.provision :shell, inline: $gce
+    cloud.vm.provision :shell, inline: $aws
+    cloud.vm.provision :shell, inline: $azure
   end
 
 end

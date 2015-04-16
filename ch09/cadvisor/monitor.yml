@@ -1,0 +1,31 @@
+influxdb:
+  image: tutum/influxdb
+  ports:
+   - 8083:8083
+   - 8086:8086
+  environment:
+   - PRE_CREATE_DB=db
+grafana:
+  image: tutum/grafana
+  ports:
+    - 80:80
+  links:
+    - influxdb:influxdb
+  environment:
+    - HTTP_USER=admin
+    - HTTP_PASS=root
+    - INFLUXDB_HOST=influxdb
+    - INFLUXDB_NAME=db
+cadvisor:
+  image: google/cadvisor
+  ports:
+    - 8080:8080
+  links:
+    - influxdb:influxdb
+  volumes:
+    - /var/run:/var/run:rw
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
+  command: -storage_driver=influxdb -storage_driver_host=influxdb:8086 -storage_driver_db=db
+load:
+  image: borja/unixbench

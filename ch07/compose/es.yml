@@ -1,0 +1,19 @@
+es:
+  image: ehazlett/elasticsearch
+  ports:
+   - 9300:9300
+   - 9200:9200
+kibana:
+  image: ehazlett/kibana
+  ports:
+   - 80:80
+logstash:
+  image: ehazlett/logstash
+  ports:
+   - 5000:5000
+   - 5000:5000/udp
+  links:
+   - es:elasticsearch
+  command: -f /etc/logstash.conf.sample 
+load:
+  image: borja/unixbench

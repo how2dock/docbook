@@ -1,0 +1,12 @@
+apiVersion: v1beta3
+kind: Service
+metadata: 
+  labels: 
+    name: wordpress
+  name: wordpress
+spec: 
+  publicIPs: ["185.19.28.100"]
+  ports:
+    - port: 80
+  selector: 
+    name: wordpress

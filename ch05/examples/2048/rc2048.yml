@@ -1,0 +1,20 @@
+apiVersion: v1beta3
+kind: ReplicationController
+metadata:
+  labels:
+    name: r2r
+  name: r2r
+spec:
+  replicas: 1
+  selector:
+    name: game
+  template:
+    metadata:
+      labels:
+        name: game
+    spec:
+      containers:
+      - image: cpk1224/docker-2048
+        name: test
+        ports:
+        - containerPort: 80

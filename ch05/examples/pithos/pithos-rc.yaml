@@ -1,0 +1,23 @@
+apiVersion: v1beta3
+kind: ReplicationController
+metadata:
+  labels:
+    name: pithos
+  name: pithos
+spec:
+  replicas: 1
+  selector:
+    name: pithos
+  template:
+    metadata:
+      labels:
+        name: pithos
+      name: pithos
+    spec:
+      containers:
+        - image: runseb/pithos:latest
+          name: pithos
+          ports:
+            - containerPort: 8080
+              hostPort: 8080
+              name: pithosport

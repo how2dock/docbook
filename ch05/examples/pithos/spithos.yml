@@ -1,0 +1,12 @@
+apiVersion: v1beta3
+kind: Service
+metadata: 
+  labels: 
+    name: pithos
+  name: pithos
+spec: 
+  createExternalLoadBalancer: true
+  ports:
+    - port: 8080
+  selector: 
+    name: pithos

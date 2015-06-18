@@ -1,0 +1,11 @@
+apiVersion: v1beta3
+kind: Pod
+metadata:
+  name: podnamemetadata
+spec:
+  containers:
+  - image: cpk1224/docker-2048 
+    name: imagename
+    ports:
+    - containerPort: 80
+      hostPort: 80

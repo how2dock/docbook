@@ -1,0 +1,15 @@
+apiVersion: v1beta3
+kind: Pod
+metadata:
+  labels:
+    name: pithos
+  name: pithos
+spec:
+  containers:
+    - image: runseb/pithos:latest
+      name: pithos
+      args: ["-a", "install-schema"]
+      ports:
+        - containerPort: 8080
+          name: pithosport
+  restartPolicy: never

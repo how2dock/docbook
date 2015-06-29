@@ -1,0 +1,29 @@
+id: ranchervm
+kind: ReplicationController
+apiVersion: v1beta2
+desiredState:
+  replicas: 1
+  replicaSelector:
+    name: ranchervm
+  podTemplate:
+    desiredState:
+      manifest:
+        version: v1beta2
+        id: vm 
+        containers:
+          - name: vm
+            image: rancher/vm-rancheros
+            privileged: true
+            volumeMounts:
+              - name: ranchervm
+                mountPath: /ranchervm
+            env:
+              - name: RANCHER_VM
+                value: "true"
+        volumes:
+          - name: ranchervm
+            source:
+              hostDir:
+                path: /tmp/ranchervm
+    labels:
+      name: ranchervm

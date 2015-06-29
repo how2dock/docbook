@@ -1,0 +1,24 @@
+apiVersion: v1beta2
+kind: Pod
+id: ranchervm
+labels:
+  name: vm
+desiredState:
+  manifest:
+    version: v1beta2
+    containers:
+      - name: master
+        image: rancher/vm-rancheros
+        privileged: true
+        volumeMounts:
+          - name: ranchervm
+            mountPath: /ranchervm
+        env:
+         - name: RANCHER_VM
+           value: "true"
+    volumes:
+      - name: ranchervm
+        source:
+          hostDir: 
+            path: /tmp/ranchervm
+

@@ -1,0 +1,20 @@
+apiVersion: v1beta3
+kind: ReplicationController
+metadata:
+  labels:
+    name: hostname
+  name: hostname
+spec:
+  replicas: 1
+  selector:
+    name: hostname
+  template:
+    metadata:
+      labels:
+        name: hostname
+    spec:
+      containers:
+        - image: runseb/hostname:latest
+          name: hostname
+          ports:
+            - containerPort: 5050

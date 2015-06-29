@@ -1,0 +1,34 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+$bootstrap=<<SCRIPT
+apt-get update
+apt-get -y install wget
+wget -qO- https://experimental.docker.com/ | sh
+#curl -sSL https://get.docker.com/ubuntu/ | sudo sh
+gpasswd -a vagrant docker
+#echo DOCKER_OPTS=\\"-H tcp://0.0.0.0:2375\\" >> /etc/default/docker
+service docker restart
+SCRIPT
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  num_nodes = 2
+  base_ip = "192.168.33."
+  swarm_ips = num_nodes.times.collect { |n| base_ip + "#{n+11}" }
+
+  num_nodes.times do |n|
+    config.vm.define "swarm-#{n+1}" do |swarm|
+      swarm.vm.box = "ubuntu/trusty64"
+      swarm_ip = swarm_ips[n]
+      swarm_index = n+1
+      swarm.vm.hostname = "swarm-#{swarm_index}"
+      swarm.vm.network :private_network, ip: "#{swarm_ip}"
+      swarm.vm.provision :shell, inline: $bootstrap
+    end
+  end
+
+end

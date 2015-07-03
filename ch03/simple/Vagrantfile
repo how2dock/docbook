@@ -18,11 +18,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "foobar-server" do |foobar|
     foobar.vm.box = "ubuntu/trusty64"
     foobar.vm.hostname = "foobar-server"
-    foobar.vm.network :private_network, ip: "192.168.33.10"
+    #foobar.vm.network :private_network, ip: "192.168.33.10"
     foobar.vm.provider "virtualbox" do |vb|
-     vb.customize ["modifyvm", :id, "--memory", "512"]
+     vb.customize ["modifyvm", :id, "--memory", "1024"]
+     vb.customize ["modifyvm", :id, "--nicpromisc1", "allow-all"]
+     vb.customize ["modifyvm", :id, "--nictype1", "Am79C973"]
     end
-    foobar.vm.provision :shell, inline: $foobar
+    foobar.vm.provision :shell, inline: $bootstrap
   end
 
 end

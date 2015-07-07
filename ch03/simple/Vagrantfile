@@ -8,8 +8,11 @@ $bootstrap=<<SCRIPT
 apt-get update
 apt-get -y install wget curl
 apt-get -y install bridge-utils
-wget -qO- https://experimental.docker.com/ | sh
+apt-get -y install openvswitch-common openvswitch-switch
+curl -sSL https://get.docker.com | sh
+#wget -qO- https://experimental.docker.com/ | sh
 gpasswd -a vagrant docker
+#echo DOCKER_OPTS=\\"--iptables=false --ip-forward=false --icc=false\\" >> /etc/default/docker
 service docker restart
 SCRIPT
 

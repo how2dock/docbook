@@ -1,0 +1,39 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+$bootstrap=<<SCRIPT
+apt-get update
+apt-get -y install wget curl git
+curl -sSL https://get.docker.com | sh
+gpasswd -a vagrant docker
+service docker restart
+wget https://storage.googleapis.com/golang/go1.4.2.linux-amd64.tar.gz
+tar -C /usr/local -xzf go1.4.2.linux-amd64.tar.gz
+echo PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/local/go/bin\" > /etc/environment
+echo GOPATH=\"/home/vagrant/go\" >> /etc/environment
+cd /home/vagrant
+mkdir -p /home/vagrant/go/src/github.com
+cd /home/vagrant/go/src/github.com
+git clone https://github.com/opencontainers/runc
+chown -R vagrant /home/vagrant/go
+chgrp -R vagrant /home/vagrant/go
+SCRIPT
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  config.vm.define "runc" do |foobar|
+    foobar.vm.box = "ubuntu/trusty64"
+    foobar.vm.hostname = "runc"
+    #foobar.vm.network :private_network, ip: "192.168.33.10"
+    foobar.vm.provider "virtualbox" do |vb|
+     vb.customize ["modifyvm", :id, "--memory", "1024"]
+     vb.customize ["modifyvm", :id, "--nicpromisc1", "allow-all"]
+     vb.customize ["modifyvm", :id, "--nictype1", "Am79C973"]
+    end
+    foobar.vm.provision :shell, inline: $bootstrap
+  end
+
+end

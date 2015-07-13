@@ -1,0 +1,18 @@
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+	config.vm.box = "ubuntu/trusty64"
+	config.vm.provider "virtualbox" do |vb|
+		vb.customize ["modifyvm", :id, "--memory", "1024"]
+	end
+
+	config.vm.provision :shell, :path => "bootstrap.sh"
+
+	config.vm.define "master" do |master|
+		master.vm.network "private_network", ip: "192.168.33.10"
+	end
+
+	config.vm.define "worker" do |worker|
+		worker.vm.network "private_network", ip: "192.168.33.11"
+	end
+end

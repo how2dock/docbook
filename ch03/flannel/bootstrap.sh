@@ -4,7 +4,7 @@ ETCD_URL=https://github.com/coreos/etcd/releases/download/v2.0.13/etcd-v2.0.13-l
 FLANNEL_URL=https://github.com/coreos/flannel/releases/download/v0.5.1/flannel-0.5.1-linux-amd64.tar.gz
 
 # Install latest Docker
-curl -sSL https://get.docker.com/ubuntu/ | sudo sh
+curl -sSL https://get.docker.com/ | sudo sh
 sudo gpasswd -a vagrant docker
 sudo service docker stop
 

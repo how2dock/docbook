@@ -7,5 +7,5 @@ This box sets up a Ubuntu 14.04 machine with Docker and a few images:
 * nginx
 * runseb/hostname
 
-This is used to demonstract dynamic load balancing, where registrator registers containers in consul and confd automatically writes a new conf for nginx.
+This is used to demonstrate dynamic load balancing, where registrator registers containers in consul and confd automatically writes a new conf for nginx.
 

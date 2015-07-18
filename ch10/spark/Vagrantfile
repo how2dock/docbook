@@ -21,7 +21,8 @@ wget -qO- https://experimental.docker.com/ | sh
 gpasswd -a vagrant docker
 echo DOCKER_OPTS=\\"--default-network=overlay:multihost --kv-store=consul:192.168.33.10:8500 --label=com.docker.network.driver.overlay.bind_interface=eth1 --label=com.docker.network.driver.overlay.neighbor_ip=192.168.33.11\\" >> /etc/default/docker
 service docker restart
-docker pull erkules/galera:basic
+docker pull gcr.io/google_containers/spark-master 
+docker pull runseb/spark-worker
 SCRIPT
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
@@ -42,16 +43,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   num_nodes.times do |n|
-    config.vm.define "mysql-#{n+1}" do |net|
-      net.vm.box = "chef/ubuntu-14.10"
-      net_ip = net_ips[n]
-      net_index = n+1
-      net.vm.hostname = "net-#{net_index}"
-      net.vm.provider "virtualbox" do |vb|
-        vb.customize ["modifyvm", :id, "--memory", "1024"]
+    config.vm.define "spark-#{n+1}" do |s|
+      s.vm.box = "chef/ubuntu-14.10"
+      s_ip = net_ips[n]
+      s_index = n+1
+      s.vm.hostname = "spark-#{s_index}"
+      s.vm.provider "virtualbox" do |vb|
+        vb.customize ["modifyvm", :id, "--memory", "2048"]
       end
-      net.vm.network :private_network, ip: "#{net_ip}"
-      net.vm.provision :shell, inline: $bootstrap
+      s.vm.network :private_network, ip: "#{s_ip}"
+      s.vm.provision :shell, inline: $bootstrap
     end
   end
 

@@ -2,14 +2,14 @@
 "builders": [
   {
     "type": "docker",
-    "image": "ansible/ubuntu14.04-ansible:stable",
+    "image": "ubuntu:14.04",
     "commit": "true"
   }
 ],
 "provisioners": [
   {
     "type": "shell",
-    "playbook_file": "bootstrap.sh"
+    "script": "bootstrap.sh"
   }
 ],
 "post-processors": [

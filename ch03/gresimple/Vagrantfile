@@ -8,8 +8,8 @@ $bootstrap=<<SCRIPT
 apt-get update
 apt-get -y install wget curl
 apt-get -y install bridge-utils
-apt-get -y install openvswitch-common openvswitch-switch
 curl -sSL https://get.docker.com | sh
+#echo DOCKER_OPTS=\\"\\" >> /etc/default/docker
 #wget -qO- https://experimental.docker.com/ | sh
 gpasswd -a vagrant docker
 service docker restart

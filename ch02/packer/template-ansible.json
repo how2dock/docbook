@@ -16,7 +16,7 @@
    {
      "type": "docker-tag",
      "repository": "how2dock/packer",
-     "tag": "latest"
+     "tag": "ansible"
    }
 ]
 }

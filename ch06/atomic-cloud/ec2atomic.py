@@ -7,8 +7,8 @@ from libcloud.compute.providers import get_driver
 ACCESS_ID = os.getenv('AWSAccessKeyId')
 SECRET_KEY = os.getenv('AWSSecretKey')
 
-IMAGE_ID = 'ami-dd3fb0aa'
-SIZE_ID = 'm3.medium'
+IMAGE_ID = 'ami-05513b72'
+SIZE_ID = 't2.micro'
 
 cls = get_driver(Provider.EC2_EU_WEST)
 driver = cls(ACCESS_ID, SECRET_KEY)

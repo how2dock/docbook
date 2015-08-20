@@ -6,7 +6,7 @@ VAGRANTFILE_API_VERSION = "2"
 
 $bootstrap=<<SCRIPT
 apt-get update
-curl -sSL https://get.docker.com/ubuntu/ | sudo sh
+curl -sSL https://get.docker.com/ | sudo sh
 gpasswd -a vagrant docker
 echo DOCKER_OPTS=\\"-H tcp://0.0.0.0:2375\\" >> /etc/default/docker
 service docker restart
@@ -14,7 +14,7 @@ SCRIPT
 
 $swarm=<<SCRIPT
 apt-get update
-curl -sSL https://get.docker.com/ubuntu/ | sudo sh
+curl -sSL https://get.docker.com/ | sudo sh
 gpasswd -a vagrant docker
 docker pull swarm
 SCRIPT

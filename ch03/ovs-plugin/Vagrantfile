@@ -22,10 +22,20 @@ SCRIPT
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  config.vm.define "ovsnode" do |ovs|
+  config.vm.define "ovsnode1" do |ovs|
     ovs.vm.box = "ubuntu/trusty64"
-    ovs.vm.hostname = "ovsnode"
+    ovs.vm.hostname = "ovsnode1"
     ovs.vm.network :private_network, ip: "192.168.33.10"
+    ovs.vm.provider "virtualbox" do |vb|
+     vb.customize ["modifyvm", :id, "--memory", "1024"]
+    end
+    ovs.vm.provision :shell, inline: $bootstrap
+  end
+
+  config.vm.define "ovsnode2" do |ovs|
+    ovs.vm.box = "ubuntu/trusty64"
+    ovs.vm.hostname = "ovsnode2"
+    ovs.vm.network :private_network, ip: "192.168.33.11"
     ovs.vm.provider "virtualbox" do |vb|
      vb.customize ["modifyvm", :id, "--memory", "1024"]
     end

@@ -4,6 +4,15 @@
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
+$bootstrap=<<SCRIPT
+yum -y update
+yum -y install epel-release
+yum -y install docker-io
+service docker start
+chkconfig docker on
+usermod -a -G docker vagrant
+SCRIPT
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "chef/centos-6.5"
@@ -21,6 +30,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
      vb.customize ["modifyvm", :id, "--memory", "1024"]
   end
 
-  config.vm.provision :shell, :path => "docker-bootstrap.sh"
+  config.vm.provision :shell, inline: $bootstrap
 
 end

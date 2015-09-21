@@ -11,7 +11,7 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "atomic"
-  config.vm.box_url = "http://buildlogs.centos.org/rolling/7/isos/x86_64/CentOS-7-x86_64-AtomicHost-Vagrant-VirtualBox.box"
+  config.vm.box_url = "http://cloud.centos.org/centos/7/atomic/images/CentOS-Atomic-Host-7-Vagrant-Virtualbox.box"
   
   config.vm.provider "virtualbox" do |vb, override|
      vb.customize ["modifyvm", :id, "--memory", "2048"]

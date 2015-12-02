@@ -7,7 +7,7 @@ VAGRANTFILE_API_VERSION = "2"
 $bootstrap=<<SCRIPT
 apt-get update
 apt-get -y install wget
-curl -sSL https://get.docker.com/ubuntu/ | sudo sh
+curl -sSL https://get.docker.com/ | sudo sh
 gpasswd -a vagrant docker
 wget https://github.com/docker/machine/releases/download/v0.1.0/docker-machine_linux-amd64
 SCRIPT

@@ -4,7 +4,7 @@
 docker_package: lxc-docker
 #
 # 
-apt_repository_details: deb https://get.docker.com/ubuntu docker main
+apt_repository_details: deb https://get.docker.com docker main
 #
 #
 apt_key_url: keyserver.ubuntu.com 

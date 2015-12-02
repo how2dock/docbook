@@ -8,7 +8,7 @@ $bootstrap=<<SCRIPT
 apt-get update
 apt-get -y install unzip
 apt-get -y install python-pip
-curl -sSL https://get.docker.com/ubuntu/ | sudo sh
+curl -sSL https://get.docker.com/ | sudo sh
 gpasswd -a vagrant docker
 service docker restart
 SCRIPT

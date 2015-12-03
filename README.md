@@ -2,11 +2,14 @@
 
 This repository is a collection of scripts/Vagrantfiles for the O'Reilly Docker [cookbook](http://shop.oreilly.com/product/0636920036791.do)
 
-![Book cover](./images/bookcover.png)
+![Book cover](./images/bookcover.png =250x)
 
 * * *
-The book is now finished, however due to frequent changes of Docker they may need to be updated
+*The book is now finished, however due to frequent changes of Docker they may need to be updated*
 * * *
+
+Chapters
+========
 
 [Chapter 1 - Installation](ch01/)
 
@@ -27,3 +30,9 @@ The book is now finished, however due to frequent changes of Docker they may nee
 [Chapter 9 - Monitoring and Logging](ch09/)
 
 [Chapter 10 - Use cases](ch10/)
+
+Issues and Contributing
+=======================
+
+If you have any issues with these scripts, please create an [issue](https://github.com/how2dock/docbook/issues) or submit a [pull request](https://github.com/how2dock/docbook/pulls).
+

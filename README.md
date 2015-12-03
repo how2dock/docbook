@@ -2,7 +2,7 @@
 
 This repository is a collection of scripts/Vagrantfiles for the O'Reilly Docker [cookbook](http://shop.oreilly.com/product/0636920036791.do)
 
-![Book cover](./images/bookcover.png =250x)
+<img src="./images/bookcover.png" alt="book Cover" style="width: 250px;"/>
 
 * * *
 *The book is now finished, however due to frequent changes of Docker they may need to be updated*

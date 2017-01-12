@@ -11,7 +11,7 @@ wget -qO- https://get.docker.com/ | sh
 gpasswd -a vagrant docker
 service docker restart
 apt-get -y install wget unzip
-wget https://dl.bintray.com/mitchellh/packer/packer_0.8.5_linux_amd64.zip
+wget https://releases.hashicorp.com/packer/0.8.5/packer_0.8.5_linux_amd64.zip
 unzip /home/vagrant/packer_0.8.5_linux_amd64.zip
 SCRIPT
 

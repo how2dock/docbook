@@ -4,10 +4,13 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-
+  ENV['VAGRANT_DEFAULT_PROVIDER'] = 'docker'
   config.vm.provider "docker" do |d|
+     d.vagrant_vagrantfile = "boot2docker"
      d.build_dir = "."
+     d.has_ssh = true
   end
+  config.ssh.port = 22
   
   config.vm.network "forwarded_port", guest: 5000, host: 5000
 
